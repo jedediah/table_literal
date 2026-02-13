@@ -61,5 +61,9 @@ describe Table do
 
       expect{ t.() {} }.to raise_error(ArgumentError, /repeat/i)
     end
+
+    it "calls super if the argument is not an empty string" do
+      expect(Table { `echo woot` }.() {}).to match(/woot/)
+    end
   end
 end
