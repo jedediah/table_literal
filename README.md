@@ -156,18 +156,17 @@ except it requires a block argument, and it returns the result of the definition
 This is what table literals were made for:
 
 ```RUBY
-require 'factory_bot'
-require 'table/factory_bot'
-
-FactoryBot.create_table :user, :with_some_trait do
-          th :name,       :email,                 :birthday
-  alice = td 'Alice',     'alice@woot.com',       _ 
-          td 'Bob',       'bob@thingy.com',       alice.birthday + 1.year
-          td 'Charlie',   'charlie@thingy.com',   alice.birthday + 2.years
+test "something about users" do
+  users = create_table :user, :with_some_trait do
+            th :name,       :email,               :supervisor,   :hired_at
+    alice = td 'Alice',     'alice@woot.com',     nil,           _ 
+            td 'Bob',       'bob@woot.com',       alice,         alice.hired_at + 1.year
+            td 'Charlie',   'charlie@woot.com',   ``,            alice.hired_at + 2.years
+            td 'Dexter',    'dexter@woot.com',    ``,            alice.hired_at + 5.years
+  end
+  
+  # ...
 end
-```
-```
-[#<User:Alice ...>, #<User:Bob ...>, #<User:Charlie ...>]
 ```
 Require the optional library `table/factory_bot` to extend FactoryBot with `*_table` methods,
 that run factories with overrides provided in table syntax.
@@ -180,7 +179,43 @@ They return an `Array` of whatever the respective strategy returns.
 Using `_` in the table will omit the attribute override for that row, allowing the factory to generate it.
 
 The factory output is also returned from each `#td` in the table,
-and can be used to derive the following rows, as demonstrated above with `alice`.
+and can be referenced in later rows, as demonstrated above with `alice`.
+
+Tables are a game changer when creating a list of examples with several overrides.
+With stock FactoryBot, it's much harder to fit each example on a single line,
+so you typically end up with something like this:
+
+```RUBY
+users = [
+  alice = create(
+    :user, :with_some_trait,
+    name: 'Alice',
+    email: 'alice@woot.com',
+    supervisor: nil
+  ),
+  create(
+    :user, :with_some_trait,
+    name: 'Bob',
+    email: 'bob@woot.com',
+    supervisor: alice,
+    hired_at: alice.hired_at + 1.year
+  ),
+  create(
+    :user, :with_some_trait,
+    name: 'Charlie',
+    email: 'charlie@woot.com',
+    supervisor: alice,
+    hired_at: alice.hired_at + 2.years
+  ),
+  create(
+    :user, :with_some_trait,
+    name: 'Dexter',
+    email: 'dexter@woot.com',
+    supervisor: alice,
+    hired_at: alice.hired_at + 5.years
+  )
+]
+```
 
 ## TODO
 
