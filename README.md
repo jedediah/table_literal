@@ -37,8 +37,8 @@ Table { |t|
 ```
 Otherwise, the definition methods will be on `self` inside the block, as in all following examples.
 
-Call `#th` (or `#head`) to define column keys,
-and `#td` (or `#data`) to define rows of respective data.
+Call `th` (or `head`) to define column keys,
+and `td` (or `data`) to define rows of respective data.
 Column keys can be any object that is usable as a `Hash` key.
 Columns can change in the middle of the block.
 
@@ -60,12 +60,12 @@ Table {
 ]
 ```
 
-`#th` does not accept duplicate keys.
-`#td` requires the same number of arguments as the last `#th`.
+`th` does not accept duplicate keys.
+`td` requires the same number of arguments as the last `th`.
 
 ### Extra Data
 
-`#tx` (or `#extra`) defines key/value pairs that are included in every subsequent output row:
+`tx` (or `extra`) defines key/value pairs that are included in every subsequent output row:
 
 ```RUBY
 Table {
@@ -87,7 +87,7 @@ Table data takes priority over extra data with the same key.
 
 ### Ignores
 
-Passing `_` as an argument to `#td` omits that column's key from the output row,
+Passing `_` as an argument to `td` omits that column's key from the output row,
 or uses the respective extra data, if available:
 
 ```RUBY
@@ -107,12 +107,12 @@ Table {
   {a: 7, b: 8}
 ]
 ```
-`#_` (or `#ignore`) is a method that returns a special token object,
+`_` (or `ignore`) is a method that returns a special token object,
 which can also be referenced as `Table::IGNORE`.
 
 ### Repeats
 
-Passing ``` `` ``` (two backticks, AKA ditto mark) as an argument to `#td` repeats the last value in that column:
+Passing ``` `` ``` (two backticks, AKA ditto mark) as an argument to `td` repeats the last value in that column:
 
 ```RUBY
 Table {
@@ -130,7 +130,7 @@ Table {
 ]
 ```
 ``` `` ``` returns a special token object,
-which is also returned from `#repeat` or `#”` (U+201D right double quotation mark),
+which is also returned from `repeat` or `”` (U+201D right double quotation mark),
 or referenced as `Table::REPEAT`.
 
 Note that ``` `` ``` calls the operator method `` #` `` with an empty string argument, which is handled as a special case.
@@ -142,16 +142,16 @@ typically the one in `Kernel` that runs a shell command.
 `Table { ... }` returns an instance of `Table::Definition`, which is `Enumerable`.
 Every time this object is enumerated, the definition block is evaluated.
 
-To simply get an `Array` of `Hash`es for the table, call  `#to_a`.
+To simply get an `Array` of `Hash`es for the table, call  `to_a`.
 
-Calling `#each` with a block yields each row of the table as a `Hash`, as it is defined.
-The result of the `#each` block is returned from the `#td` call inside the definition block.
+Calling `each` with a block yields each row of the table as a `Hash`, as it is defined.
+The result of the `each` block is returned from the `td` call inside the definition block.
 This allows products of table rows to be passed back and used for subsequent rows.
 See [FactoryBot Integration](#factorybot-integration) for an example of how this can be useful.
 
-Calling `#each` without a block returns an `Enumerator`, as usual.
+Calling `each` without a block returns an `Enumerator`, as usual.
 
-`Table::Definition` also implements `#call`, which does the same thing as `#each`,
+`Table::Definition` also implements `call`, which does the same thing as `each`,
 except it requires a block argument, and it returns the result of the definition block.
 
 ## [FactoryBot](https://github.com/thoughtbot/factory_bot) Integration
@@ -178,12 +178,12 @@ That includes default strategies (`create_table`, `build_table`, `attributes_for
 and custom strategies registered through `FactoryBot.register_strategy()`.
 
 These `*_table` methods take a factory name, zero or more trait names, and a table definition block.
-Each `#td` runs the factory with the given overrides, and returns the factory product.
+Each `td` runs the factory with the given overrides, and returns the factory product.
 An `Array` of all products is returned from the `*_table` method.
 
 Using `_` in the table will omit the attribute override for that row, allowing the factory to generate it.
 
-The product returned from `#td` can be referenced in later rows, as demonstrated above with `alice`.
+The product returned from `td` can be referenced in later rows, as demonstrated above with `alice`.
 
 Tables are super nice for lists of examples with several overrides.
 With stock FactoryBot, it's much harder to fit each example on a single line,
