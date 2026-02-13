@@ -1,4 +1,4 @@
-describe TableLiteral do
+describe Table do
   describe "macro" do
     it "is privately callable" do
       expect{ table{} }.not_to raise_error

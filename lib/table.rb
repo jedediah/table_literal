@@ -1,9 +1,9 @@
-class TableLiteral
+class Table
   include Enumerable
 
   module ObjectExt
     private
-    def table(&definition) = TableLiteral.new(&definition)
+    def table(&definition) = Table.new(&definition)
   end
 
   def self.install! = Object.send(:include, ObjectExt)

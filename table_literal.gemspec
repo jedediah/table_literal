@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.description = "A concise table syntax to generate a sequence of uniform Hashes"
   s.authors     = ["Jedediah Smith"]
   s.email       = "jedediah@silencegreys.com"
-  s.files       = ["lib/table_literal.rb"]
+  s.files       = ["lib/table.rb"]
   s.homepage    = "https://rubygems.org/gems/table_literal"
   s.license     = "MIT"
 end
