@@ -1,6 +1,9 @@
 module Table
-  SKIP = Object.new.freeze
-  REPEAT = Object.new.freeze
+  SKIP = Object.new
+  def SKIP.inspect = "#{Table}::SKIP"
+
+  REPEAT = Object.new
+  def REPEAT.inspect = "#{Table}::REPEAT"
 
   class Evaluation
     def self.call(definition, &block) = raise NoMethodError
@@ -15,6 +18,7 @@ module Table
     def _ = SKIP
 
     def repeat = REPEAT
+    def ” = REPEAT
     def `(s) = s.empty? ? REPEAT : super
 
     def extra(**extra)
@@ -64,9 +68,5 @@ module Table
 
   class EvaluationWithArgument < Evaluation
     def self.call(definition, &block) = definition.(new(&block))
-
-    # alias_method :x, :extra
-    # alias_method :h, :head
-    # alias_method :d, :data
   end
 end
