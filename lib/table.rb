@@ -32,6 +32,9 @@ class Table
     end
   end
 
+  SKIP = Object.new.freeze
+  REPEAT = Object.new.freeze
+
   class Evaluation
     def self.call(definition, &block) = raise NoMethodError
 
@@ -41,11 +44,9 @@ class Table
       super()
     end
 
-    SKIP = Object.new.freeze
     def skip = SKIP
     def _ = SKIP
 
-    REPEAT = Object.new.freeze
     def repeat = REPEAT
     def `(s) = s.empty? ? REPEAT : super
 
