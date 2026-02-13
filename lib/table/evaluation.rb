@@ -1,29 +1,50 @@
 module Table
-  SKIP = Object.new
-  def SKIP.inspect = "#{Table}::SKIP"
+  # Table data cells with this value are ommitted from output
+  IGNORE = Object.new
+  def IGNORE.inspect = "#{Table}::IGNORE"
 
+  # Table data cells with this value will repeat the last value in the same column
   REPEAT = Object.new
   def REPEAT.inspect = "#{Table}::REPEAT"
 
+  # Instantiated for each evaluation of a table definition.
+  # Implements the table DSL.
   class Evaluation
-    def self.call(definition, &block) = raise NoMethodError
+    def self.call(definition, &handler) = raise NoMethodError
 
-    def initialize(&block)
-      @block = block
+    class InContext < self
+      def self.call(definition, &handler) = new(&handler).instance_exec(&definition)
+    end
+
+    class WithArgument < self
+      def self.call(definition, &handler) = definition.(new(&handler))
+    end
+
+    def initialize(&handler)
+      @handler = handler
       @values = {}
       super()
     end
 
-    def skip = SKIP
-    def _ = SKIP
+    # Special value indicating that a table data cell should be ignored.
+    # If there is #extra data with the same key, that value will be used instead.
+    # Otherwise, the key is ommitted from the output for this row.
+    def ignore = IGNORE
+    alias_method :_, :ignore
 
+    # Table data cells with this value will repeat the last value in the same column
     def repeat = REPEAT
-    def ” = REPEAT
+    alias_method :”, :repeat
+
+    # If argument is an empty string, calls #repeat.
+    # Otherwise, calls super (which is typically Kernel#`).
     def `(s) = s.empty? ? REPEAT : super
 
+    # Define extra
     def extra(**extra)
       @extra = extra.freeze
     end
+    alias_method :tx, :extra
 
     def head(*keys)
       keys_hash = {}
@@ -35,6 +56,7 @@ module Table
       @keys = keys.freeze
       @values.clear
     end
+    alias_method :th, :head
 
     def data(*values)
       @keys or raise ArgumentError, "no columns have been defined"
@@ -48,25 +70,14 @@ module Table
         if value == REPEAT
           @values.key?(i) or raise ArgumentError, "no previous rows to repeat"
           row[@keys[i]] = @values[i]
-        elsif value != SKIP
+        elsif value != IGNORE
           @values[i] = value
           row[@keys[i]] = value
         end
       end
 
-      @block.(row)
+      @handler.(row)
     end
-
-    alias_method :tx, :extra
-    alias_method :th, :head
     alias_method :td, :data
-  end
-
-  class EvaluationInContext < Evaluation
-    def self.call(definition, &block) = new(&block).instance_exec(&definition)
-  end
-
-  class EvaluationWithArgument < Evaluation
-    def self.call(definition, &block) = definition.(new(&block))
   end
 end

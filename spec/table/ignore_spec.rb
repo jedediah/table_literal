@@ -1,5 +1,5 @@
 describe Table do
-  describe "skip" do
+  describe "ignore" do
     it "omits a column from a row" do
       t = Table {
         th :a, :b, :c

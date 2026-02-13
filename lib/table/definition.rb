@@ -7,7 +7,7 @@ module Table
       definition or raise ArgumentError, "definition block required"
 
       @definition = definition
-      @evaluator = definition.arity.zero? ? EvaluationInContext : EvaluationWithArgument
+      @evaluator = definition.arity.zero? ? Evaluation::InContext : Evaluation::WithArgument
       super()
     end
 

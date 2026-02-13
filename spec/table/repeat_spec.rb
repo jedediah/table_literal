@@ -21,7 +21,7 @@ describe Table do
       expect(t.to_a).to eq([{a: 1}, {a: 1}, {a: 1}])
     end
 
-    it "ignores skips" do
+    it "does not repeat ignores" do
       t = Table {
         th :a
         td 1
@@ -52,7 +52,7 @@ describe Table do
       expect{ t.() {} }.to raise_error(ArgumentError, /repeat/i)
     end
 
-    it "raises when all previous rows contain skips" do
+    it "raises when all previous rows are ignored" do
       t = Table {
         th :a
         td _

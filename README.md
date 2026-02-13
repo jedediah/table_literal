@@ -84,7 +84,7 @@ Table {
 Extra data can be changed anywhere in the definition block.
 Table data takes priority over extra data with the same key. 
 
-### Skips
+### Ignores
 
 Passing `_` as an argument to `#td` omits that column's key from the output row,
 or uses the respective extra data, if available:
@@ -106,8 +106,8 @@ Table {
   {a: 7, b: 8}
 ]
 ```
-`#_` is a method that returns a token object `Table::SKIP`.
-You can also get this object from `#skip`, or reference it directly.
+`#_` is a method that returns a token object `Table::IGNORE`.
+You can also get this object from `#ignore`, or reference it directly.
 
 ### Repeats
 

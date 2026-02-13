@@ -55,7 +55,7 @@ describe Table::FactoryBotExt do
     expect(cat).to have_attributes(name: 'Stray', age: 2, breed: 'Unknown')
   end
 
-  it "does not override skipped cells" do
+  it "does not override ignored cells" do
     cat = FactoryBot.build_table(:cat) do
       th :name, :age, :breed
       td _,     2,    _
