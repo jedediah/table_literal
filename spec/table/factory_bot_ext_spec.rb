@@ -20,7 +20,7 @@ cats_table = Table {
 
 cats = cats_table.map{ Cat.new(**_1) }
 
-describe Table::FactoryBotExt do
+describe "factory_bot_ext" do
   it "builds instances" do
     expect(FactoryBot.build_table(:cat, &cats_table)).to eq(cats)
   end
