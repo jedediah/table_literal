@@ -1,0 +1,11 @@
+Gem::Specification.new do |s|
+  s.name        = "table_literal"
+  s.version     = "0.1.0"
+  s.summary     = "Literal data in table format"
+  s.description = "A concise table syntax to generate a sequence of uniform Hashes"
+  s.authors     = ["Jedediah Smith"]
+  s.email       = "jedediah@silencegreys.com"
+  s.files       = ["lib/table_literal.rb"]
+  s.homepage    = "https://rubygems.org/gems/table_literal"
+  s.license     = "MIT"
+end
