@@ -27,7 +27,7 @@ This kind of literal data appears particularly often in tests, when creating lis
 
 ## Defining Tables
 
-Pass a definiton block to `Table::Definition.new`, or to the global method `Table`.
+Pass a definiton block to the global method `Table` (or `Table::Definition.new`).
 If that block takes an argument, the definition methods will be callable on that argument:
 ```RUBY
 Table { |t|
@@ -37,7 +37,8 @@ Table { |t|
 ```
 Otherwise, the definition methods will be on `self` inside the block, as in all following examples.
 
-Call `#th` or `#head` to define column keys, and `#td` or `#data` to define rows of respective data.
+Call `#th` (or `#head`) to define column keys,
+and `#td` (or `#data`) to define rows of respective data.
 Column keys can be any object that is usable as a `Hash` key.
 Columns can change in the middle of the block.
 
@@ -64,7 +65,7 @@ Table {
 
 ### Extra Data
 
-`#tx` or `#extra` defines key/value pairs that are included in every subsequent output row:
+`#tx` (or `#extra`) defines key/value pairs that are included in every subsequent output row:
 
 ```RUBY
 Table {
@@ -106,8 +107,8 @@ Table {
   {a: 7, b: 8}
 ]
 ```
-`#_` is a method that returns a token object `Table::IGNORE`.
-You can also get this object from `#ignore`, or reference it directly.
+`#_` (or `#ignore`) is a method that returns a special token object,
+which can also be referenced as `Table::IGNORE`.
 
 ### Repeats
 
@@ -128,11 +129,13 @@ Table {
   {a: 1, b: 5, c: 9}
 ]
 ```
-``` `` ``` returns a token object `Table::REPEAT`.
-You can also get this object from `#repeat`, `#”` (U+201D right double quotation mark), or reference it directly.
+``` `` ``` returns a special token object,
+which is also returned from `#repeat` or `#”` (U+201D right double quotation mark),
+or referenced as `Table::REPEAT`.
 
-Note that ``` `` ``` calls the method `` #` `` with an empty string argument, which is handled as a special case.
-If there is anything between the backticks, the call will be forwarded to `super`, which is typically ``Kernel#` ``.
+Note that ``` `` ``` calls the operator method `` #` `` with an empty string argument, which is handled as a special case.
+If there is anything between the backticks, the call will be delegated to the default implementation,
+typically the one in `Kernel` that runs a shell command.
 
 ## Using Tables
 
@@ -151,11 +154,13 @@ Calling `#each` without a block returns an `Enumerator`, as usual.
 `Table::Definition` also implements `#call`, which does the same thing as `#each`,
 except it requires a block argument, and it returns the result of the definition block.
 
-## FactoryBot Integration
+## [FactoryBot](https://github.com/thoughtbot/factory_bot) Integration
 
 This is what table literals were made for:
 
 ```RUBY
+require 'table/factory_bot'
+
 test "something about users" do
   users = create_table :user, :with_some_trait do
             th :name,       :email,               :supervisor,   :hired_at
@@ -168,20 +173,19 @@ test "something about users" do
   # ...
 end
 ```
-Require the optional library `table/factory_bot` to extend FactoryBot with `*_table` methods,
-that run factories with overrides provided in table syntax.
-This supports default strategies (`create_table`, `build_table`, `attributes_for_table`, etc.)
-as well as custom strategies registered through `FactoryBot.register_strategy()`.
+Require the optional library `table/factory_bot` to extend FactoryBot with a `*_table` method for each strategy,
+That includes default strategies (`create_table`, `build_table`, `attributes_for_table`, etc.)
+and custom strategies registered through `FactoryBot.register_strategy()`.
 
-These methods all take a factory name as the first argument, and trait names as additional arguments.
-They return an `Array` of whatever the respective strategy returns.
+These `*_table` methods take a factory name, zero or more trait names, and a table definition block.
+Each `#td` runs the factory with the given overrides, and returns the factory product.
+An `Array` of all products is returned from the `*_table` method.
 
 Using `_` in the table will omit the attribute override for that row, allowing the factory to generate it.
 
-The factory output is also returned from each `#td` in the table,
-and can be referenced in later rows, as demonstrated above with `alice`.
+The product returned from `#td` can be referenced in later rows, as demonstrated above with `alice`.
 
-Tables are a game changer when creating a list of examples with several overrides.
+Tables are super nice for lists of examples with several overrides.
 With stock FactoryBot, it's much harder to fit each example on a single line,
 so you typically end up with something like this:
 
@@ -220,5 +224,5 @@ users = [
 ## TODO
 
 * RuboCop plugin to automate table alignment.
-  Doing it by hand can be tedious, and easy to neglect e.g. after find and replace.
+  Formatting by hand is tedious, and easy to neglect e.g. after find and replace.
 * Ruby/FactoryBot version requirements

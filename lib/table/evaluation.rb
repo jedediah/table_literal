@@ -49,7 +49,7 @@ module Table
     # Otherwise, this delegates to the default implementation (which is typically Kernel#`).
     def `(s) = s.empty? ? REPEAT : super
 
-    # Define extra key/value pairs included in every output row.
+    # Define extra key/value pairs included in every subsequent output row.
     # Each call replaces any previously set extra data.
     # Any number of pairs can be given, including zero.
     def extra(**extra)
