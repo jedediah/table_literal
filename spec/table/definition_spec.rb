@@ -1,7 +1,5 @@
 describe Table do
   describe "definition" do
-    definer_methods = [:tx, :th, :td, :_, :`]
-
     it "with a parameter, is passed a definer object" do
       ctx = arg = nil
 
@@ -11,7 +9,7 @@ describe Table do
       }.() {}
 
       expect(ctx).to be(self)
-      expect(arg).to respond_to(*definer_methods)
+      expect(arg).to be_a(Table::Evaluation)
     end
 
     it "with no parameters, is evaluated in context of a definer object" do
@@ -21,7 +19,7 @@ describe Table do
         ctx = self
       }.() {}
 
-      expect(ctx).to respond_to(*definer_methods)
+      expect(ctx).to be_a(Table::Evaluation)
     end
 
     it "can be a nullary lambda" do
