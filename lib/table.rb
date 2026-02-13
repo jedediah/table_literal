@@ -1,13 +1,6 @@
 class Table
   include Enumerable
 
-  module ObjectExt
-    private
-    def table(&definition) = Table.new(&definition)
-  end
-
-  def self.install! = Object.send(:include, ObjectExt)
-
   # Create a new table, defined within the given block.
   def initialize(&definition)
     definition or raise ArgumentError, "definition block required"
@@ -102,4 +95,11 @@ class Table
     alias h head
     alias d data
   end
+
+  module ObjectExt
+    private
+    def Table(&definition) = Table.new(&definition)
+  end
+
+  Object.send(:include, ObjectExt)
 end
