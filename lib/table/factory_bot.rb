@@ -1,4 +1,7 @@
-require 'factory_bot'
+defined? FactoryBot or
+  raise LoadError, "factory_bot must be loaded before table/factory_bot"
+
+require 'table'
 
 module Table
   module FactoryBotExt
