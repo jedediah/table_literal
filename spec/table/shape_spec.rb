@@ -38,18 +38,7 @@ describe "shape" do
     ])
   end
 
-  it "accepts arbitrary objects as column keys" do
-    c = Object.new
-
-    t = Table {
-      th :a, 'b', c
-      td 1,  2,   3
-    }
-
-    expect(t.to_a).to eq([{a: 1, 'b' => 2, c => 3}])
-  end
-
-  it "can change" do
+  it "can change in the middle of the block" do
     t = Table {
       th :a, :b, :c
       td 1,  2,  3
@@ -61,34 +50,55 @@ describe "shape" do
     expect(t.to_a).to eq([{a: 1, b: 2, c: 3}, {d: 4, e: 5}])
   end
 
-  it "must have a header before any data" do
-    t = Table { td }
-    expect{ t.each{} }.to raise_error(ArgumentError, /columns/i)
+  describe "th" do
+    it "accepts arbitrary objects as column keys" do
+      c = Object.new
+
+      t = Table {
+        th :a, 'b', c
+        td 1,  2,   3
+      }
+
+      expect(t.to_a).to eq([{a: 1, 'b' => 2, c => 3}])
+    end
+
+    it "does not allow duplicate column keys" do
+      t = Table {
+        th :a, :a
+      }
+
+      expect{ t.to_a }.to raise_error(ArgumentError, /duplicate/i)
+    end
+
+    it "returns the given column keys" do
+      keys = nil
+      Table { keys = th :a, :b, :c }.() {}
+      expect(keys).to eq([:a, :b, :c])
+    end
   end
 
-  it "does not allow long data rows" do
-    t = Table {
-      th :a
-      td 1, 2
-    }
+  describe "td" do
+    it "cannot be called before columns are defined" do
+      t = Table { td }
+      expect{ t.each{} }.to raise_error(ArgumentError, /columns/i)
+    end
 
-    expect{ t.to_a }.to raise_error(ArgumentError, /wrong number of columns/i)
-  end
+    it "does not allow long data rows" do
+      t = Table {
+        th :a
+        td 1, 2
+      }
 
-  it "does not allow short data rows" do
-    t = Table {
-      th :a, :b
-      td 1
-    }
+      expect{ t.to_a }.to raise_error(ArgumentError, /wrong number of columns/i)
+    end
 
-    expect{ t.to_a }.to raise_error(ArgumentError, /wrong number of columns/i)
-  end
+    it "does not allow short data rows" do
+      t = Table {
+        th :a, :b
+        td 1
+      }
 
-  it "does not allow duplicate column keys" do
-    t = Table {
-      th :a, :a
-    }
-
-    expect{ t.to_a }.to raise_error(ArgumentError, /duplicate/i)
+      expect{ t.to_a }.to raise_error(ArgumentError, /wrong number of columns/i)
+    end
   end
 end
