@@ -1,5 +1,5 @@
 require 'factory_bot'
-require 'table/factory_bot_ext'
+require 'table/factory_bot'
 
 Cat = Struct.new(:name, :age, :breed)
 
