@@ -22,6 +22,12 @@ module Table
     end
 
     def head(*keys)
+      keys_hash = {}
+      keys.each do |key|
+        keys_hash.key?(key) and raise ArgumentError, "duplicate column key #{key.inspect}"
+        keys_hash[key] = nil
+      end
+
       @keys = keys.freeze
       @values.clear
     end

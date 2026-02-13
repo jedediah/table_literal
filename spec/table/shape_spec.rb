@@ -84,5 +84,13 @@ describe Table do
 
       expect{ t.to_a }.to raise_error(ArgumentError, /wrong number of columns/i)
     end
+
+    it "does not allow duplicate column keys" do
+      t = Table {
+        th :a, :a
+      }
+
+      expect{ t.to_a }.to raise_error(ArgumentError, /duplicate/i)
+    end
   end
 end
