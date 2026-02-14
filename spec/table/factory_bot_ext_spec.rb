@@ -12,10 +12,10 @@ FactoryBot.define do
 end
 
 cats_table = Table {
-  th :name,       :age, :breed
-  td 'Alice',     2,    'tabby'
-  td 'Bob',       5,    'tuxedo'
-  td 'Charlie',   1,    'persian'
+  th :name     , :age , :breed
+  td 'Alice'   , 2    , 'tabby'
+  td 'Bob'     , 5    , 'tuxedo'
+  td 'Charlie' , 1    , 'persian'
 }
 
 cats = cats_table.map{ Cat.new(**_1) }
@@ -57,8 +57,8 @@ describe "factory_bot_ext" do
 
   it "does not override ignored cells" do
     cat = FactoryBot.build_table(:cat) do
-      th :name, :age, :breed
-      td _,     2,    _
+      th :name , :age , :breed
+      td _     , 2    , _
     end[0]
 
     expect(cat).to have_attributes(name: 'Stray', age: 2, breed: 'Unknown')

@@ -25,10 +25,10 @@ describe "shape" do
 
   it "can have columns and rows" do
     t = Table {
-      th :a, :b, :c
-      td 1,  2,  3
-      td 4,  5,  6
-      td 7,  8,  9
+      th :a , :b , :c
+      td 1  , 2  , 3
+      td 4  , 5  , 6
+      td 7  , 8  , 9
     }
 
     expect(t.to_a).to eq([
@@ -40,11 +40,11 @@ describe "shape" do
 
   it "can change in the middle of the block" do
     t = Table {
-      th :a, :b, :c
-      td 1,  2,  3
+      th :a , :b , :c
+      td 1  , 2  , 3
 
-      th :d, :e
-      td 4,  5
+      th :d , :e
+      td 4  , 5
     }
 
     expect(t.to_a).to eq([{a: 1, b: 2, c: 3}, {d: 4, e: 5}])
@@ -55,8 +55,8 @@ describe "shape" do
       c = Object.new
 
       t = Table {
-        th :a, 'b', c
-        td 1,  2,   3
+        th :a , 'b' , c
+        td 1  , 2   , 3
       }
 
       expect(t.to_a).to eq([{a: 1, 'b' => 2, c => 3}])

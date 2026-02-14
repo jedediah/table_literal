@@ -3,9 +3,9 @@ describe "extra" do
     t = Table {
       tx c: 9
 
-      th :a, :b
-      td 1,  2
-      td 3,  4
+      th :a , :b
+      td 1  , 2
+      td 3  , 4
     }
 
     expect(t.to_a).to eq([
@@ -18,11 +18,11 @@ describe "extra" do
     t = Table {
       tx c: 9
 
-      th :a, :b
-      td 1,  2
+      th :a , :b
+      td 1  , 2
 
-      th :x, :y
-      td 3,  4
+      th :x , :y
+      td 3  , 4
     }
 
     expect(t.to_a).to eq([

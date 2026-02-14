@@ -5,10 +5,10 @@ A concise and legible syntax for literal tabular data in Ruby, e.g.
 require 'table'
 
 Table {
-  th :name,       :age,   :breed
-  td 'Abby',      2,      'tabby'
-  td 'Boots',     5,      'tuxedo'
-  td 'Checkers',  1,      'persian'
+  th :name      , :age ,   :breed
+  td 'Abby'     , 2    ,   'tabby'
+  td 'Boots'    , 5    ,   'tuxedo'
+  td 'Checkers' , 1    ,   'persian'
 }.to_a
 ```
 
@@ -44,12 +44,12 @@ Columns can change in the middle of the block.
 
 ```RUBY
 Table {
-  th :alpha, 'bravo', Complex
-  td 1,      2,       3
-  td 4,      5,       6
+  th :alpha , 'bravo' , Complex
+  td 1      , 2       , 3
+  td 4      , 5       , 6
   
-  th :delta, :echo
-  td 7,      8
+  th :delta , :echo
+  td 7      , 8
 }.to_a
 ```
 ```RUBY
@@ -71,9 +71,9 @@ Table {
 Table {
   tx x: 0, y: 1 
   
-  th :a, :b
-  td 2,  3
-  td 4,  5
+  th :a , :b
+  td 2  , 3
+  td 4  , 5
 }.to_a
 ```
 ```RUBY
@@ -94,10 +94,10 @@ or uses the respective extra data, if available:
 Table {
   tx a: 0
   
-  th :a, :b, :c
-  td _,  2,  3
-  td 4,  _,  6
-  td 7,  8,  _
+  th :a , :b , :c
+  td _  , 2  , 3
+  td 4  , _  , 6
+  td 7  , 8  , _
 }.to_a
 ```
 ```RUBY
@@ -116,10 +116,10 @@ Passing ``` `` ``` (two backticks, AKA ditto mark) as an argument to `td` repeat
 
 ```RUBY
 Table {
-  th :a, :b, :c
-  td 1,  2,  3
-  td ``, 5,  6
-  td ``, ``, 9
+  th :a , :b , :c
+  td 1  , 2  , 3
+  td `` , 5  , 6
+  td `` , `` , 9
 }.to_a
 ```
 ```RUBY
@@ -163,11 +163,11 @@ require 'table/factory_bot'
 
 test "something about users" do
   users = create_table :user, :with_some_trait do
-            th :name,       :email,               :supervisor,   :hired_at
-    alice = td 'Alice',     'alice@woot.com',     nil,           _ 
-            td 'Bob',       'bob@woot.com',       alice,         alice.hired_at + 1.year
-            td 'Charlie',   'charlie@woot.com',   ``,            alice.hired_at + 2.years
-            td 'Dexter',    'dexter@woot.com',    ``,            alice.hired_at + 5.years
+            th :name     , :email             , :supervisor , :hired_at
+    alice = td 'Alice'   , 'alice@woot.com'   , nil         , _
+            td 'Bob'     , 'bob@woot.com'     , alice       , alice.hired_at + 1.year
+            td 'Charlie' , 'charlie@woot.com' , ``          , alice.hired_at + 2.years
+            td 'Dexter'  , 'dexter@woot.com'  , ``          , alice.hired_at + 5.years
   end
   
   # ...

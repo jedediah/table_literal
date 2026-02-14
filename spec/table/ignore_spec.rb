@@ -1,10 +1,10 @@
 describe "ignore" do
   it "omits a column from a row" do
     t = Table {
-      th :a, :b, :c
-      td _,  2,  3
-      td 4,  _,  6
-      td 7,  8,  _
+      th :a , :b , :c
+      td _  , 2  , 3
+      td 4  , _  , 6
+      td 7  , 8  , _
     }
 
     expect(t.to_a).to eq([
